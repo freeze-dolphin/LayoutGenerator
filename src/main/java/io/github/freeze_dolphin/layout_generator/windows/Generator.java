@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 class Generator {
 
@@ -43,7 +45,7 @@ class Generator {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 368, 516);
+		frame.setBounds(100, 100, 384, 516);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -53,18 +55,45 @@ class Generator {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
-		new Switchers(panel);
+		Switchers switchers = new Switchers(panel);
 
 		try {
 			Class<?> c = Switchers.class;
-			JToggleButton jtb = new JToggleButton();
 			for (Field f : c.getFields()) {
 				String name = f.getName();
 				switch (size) {
 				case 1: 
 					if (!name.startsWith("t1") || name.endsWith("_1")) {
-						((JToggleButton) f.get(jtb)).setEnabled(false);
+						((JToggleButton) f.get(switchers)).setEnabled(false);
 					}
+					break;
+				case 2: 
+					if ((!name.startsWith("t1") && !name.startsWith("t2")) || name.endsWith("_1")) {
+						((JToggleButton) f.get(switchers)).setEnabled(false);
+					}
+					break;
+				case 3: 
+					if ((!name.startsWith("t1") && !name.startsWith("t2") && !name.startsWith("t3")) || name.endsWith("_1")) {
+						((JToggleButton) f.get(switchers)).setEnabled(false);
+					}
+					break;
+				case 4: 
+					if (!name.startsWith("t1") && name.endsWith("_1")) {
+						((JToggleButton) f.get(switchers)).setEnabled(false);
+					}
+					break;
+				case 5: 
+					if ((!name.startsWith("t1") || !name.startsWith("t2")) && name.endsWith("_1")) {
+						((JToggleButton) f.get(switchers)).setEnabled(false);
+					}
+					break;
+				case 6: 
+					if ((!name.startsWith("t1") || !name.startsWith("t2") || !name.startsWith("t3")) && name.endsWith("_1")) {
+						((JToggleButton) f.get(switchers)).setEnabled(false);
+					}
+					break;
+				default: 
+					((JToggleButton) f.get(switchers)).setEnabled(false);
 					break;
 				}
 			}
@@ -73,11 +102,16 @@ class Generator {
 		}
 
 		JButton btnGenerate = new JButton("Generate");
-		btnGenerate.setBounds(12, 268, 332, 25);
+		btnGenerate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnGenerate.setBounds(12, 268, 340, 25);
 		frame.getContentPane().add(btnGenerate);
 
 		JTextPane textPane = new JTextPane();
-		textPane.setBounds(12, 307, 332, 157);
+		textPane.setBounds(12, 307, 340, 157);
 		frame.getContentPane().add(textPane);
 	}
 
