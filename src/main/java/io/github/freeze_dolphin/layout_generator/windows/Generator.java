@@ -83,12 +83,12 @@ class Generator {
 					}
 					break;
 				case 5: 
-					if ((!name.startsWith("t1") || !name.startsWith("t2")) && name.endsWith("_1")) {
+					if ((!name.startsWith("t1") && !name.startsWith("t2")) && name.endsWith("_1")) {
 						((JToggleButton) f.get(switchers)).setEnabled(false);
 					}
 					break;
 				case 6: 
-					if ((!name.startsWith("t1") || !name.startsWith("t2") || !name.startsWith("t3")) && name.endsWith("_1")) {
+					if ((!name.startsWith("t1") && !name.startsWith("t2") && !name.startsWith("t3")) && name.endsWith("_1")) {
 						((JToggleButton) f.get(switchers)).setEnabled(false);
 					}
 					break;
@@ -101,18 +101,46 @@ class Generator {
 			e.printStackTrace();
 		}
 
+		JTextPane textPane = new JTextPane();
+		textPane.setBounds(12, 307, 340, 157);
+		frame.getContentPane().add(textPane);
+
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				StringBuilder sb = new StringBuilder("new int[] {");
+				boolean first = false;
+				try {
+					Class<?> c = Switchers.class;
+					for (Field f : c.getFields()) {
+						JToggleButton jtb = ((JToggleButton) f.get(switchers));
+						if (jtb.isEnabled() && jtb.isSelected()) {
+							if (!first) {
+								first = true;
+								sb.append(convert(jtb.getName()));
+							}
+							sb.append(", " + convert(jtb.getName()));
+						}
+					}
+				} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				sb.append("}");				
+				textPane.setText(sb.toString());
 			}
 		});
 		btnGenerate.setBounds(12, 268, 340, 25);
 		frame.getContentPane().add(btnGenerate);
 
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(12, 307, 340, 157);
-		frame.getContentPane().add(textPane);
+	}
+
+	private static int convert(String fieldName) {
+		int rt = 0;
+
+		String[] s = fieldName.split("");
+		if (fieldName.endsWith("_1")) { rt = 27; }
+		rt = rt + Integer.parseInt(s[2]) - 1;
+		return rt;
 	}
 
 	public int getSize() {
