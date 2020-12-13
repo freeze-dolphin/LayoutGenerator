@@ -113,6 +113,7 @@ class Generator {
 				try {
 					Class<?> c = Switchers.class;
 					for (Field f : c.getFields()) {
+						if (f == null) continue;
 						JToggleButton jtb = ((JToggleButton) f.get(switchers));
 						if (jtb.isEnabled() && jtb.isSelected()) {
 							if (!first) {
@@ -125,7 +126,7 @@ class Generator {
 				} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
-				sb.append("}");				
+				sb.append("}");		
 				textPane.setText(sb.toString());
 			}
 		});
