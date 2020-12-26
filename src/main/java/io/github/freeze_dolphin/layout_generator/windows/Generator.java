@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JToggleButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
@@ -135,24 +137,25 @@ class Generator {
 
 	}
 
-	private static int convert(String fieldName) {
-		int rt = 0;
-
-		String[] s = fieldName.split("");
-		if (fieldName.endsWith("_1")) { rt = 27; }
-		rt = rt + Integer.parseInt(s[2]) - 1;
-		return rt;
-	}
-
 	public int getSize() {
 		return size;
 	}
 
 	private class Switchers {
-
+		
+		private static ChangeListener l;
+		
 		public Switchers(JPanel panel) {
+			l = new ChangeListener() {
+
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					((JToggleButton) e.getSource()).isSelected()
+				}};
+			
 			t11.setBounds(12, 14, 24, 24);
-			panel.add(t11);			
+			t11.addChangeListener(l);
+			panel.add(t11);
 			t12.setBounds(48, 14, 24, 24);
 			panel.add(t12);
 			t13.setBounds(84, 14, 24, 24);

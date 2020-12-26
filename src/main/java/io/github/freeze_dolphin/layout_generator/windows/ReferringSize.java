@@ -47,14 +47,14 @@ class ReferringSize {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JLabel lblNewLabel = new JLabel("Inventory Size: ");
-		lblNewLabel.setBounds(12, 14, 90, 17);
+		lblNewLabel.setBounds(12, 14, 110, 17);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(lblNewLabel);
 
 		JComboBox<Integer> comboBox = new JComboBox<>();
 		comboBox.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6}));
 		comboBox.setSelectedIndex(0);
-		comboBox.setBounds(113, 11, 109, 23);
+		comboBox.setBounds(132, 11, 90, 23);
 		frame.getContentPane().add(comboBox);
 
 		JButton btnProcess = new JButton("Process");
